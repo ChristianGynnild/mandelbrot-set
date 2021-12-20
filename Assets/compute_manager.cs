@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class compute_manager : MonoBehaviour
 {
-    public int variable = Screen.width;
+    public float zoom = 1.0f;
+    public float scrollX = (float)Screen.width/2.0f;
+    public float scrollY = (float)Screen.height/2.0f;
+    public int maxIterations = 500;
     public ComputeShader computeShader;
     public RenderTexture renderTexture;
     
     int currenResolutionWidth, currenResolutionHeight;
+
     
     // Start is called before the first frame update
     void Start()
@@ -23,8 +27,16 @@ public class compute_manager : MonoBehaviour
 
         int kernelHandle = computeShader.FindKernel("CSMain");
 
-        computeShader.SetInt("screenWidth", variable);
+        //zoom += 0.1f;
+
+        computeShader.SetInt("screenWidth", Screen.width);
         computeShader.SetInt("screenHeight", Screen.height);
+        computeShader.SetInt("maxIterations", maxIterations);
+
+        computeShader.SetFloat("zoom", zoom);
+
+        computeShader.SetFloat("scrollX", scrollX);
+        computeShader.SetFloat("scrollY", scrollY);
 
 
         if (renderTexture == null || currenResolutionWidth != Screen.width || currenResolutionHeight != Screen.height){

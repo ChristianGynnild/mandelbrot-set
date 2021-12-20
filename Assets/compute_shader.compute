@@ -5,29 +5,36 @@
 // with cs.SetTexture
 
 int screenWidth, screenHeight;
+float zoom;
+uint maxIterations;
+float scrollX, scrollY;
+
 
 RWTexture2D<float4> Result;
 
 [numthreads(8,8,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
-    uint maxIterations = 500;
     uint iterationCounter = 0;
 
-
-
     float ratio = (float)screenWidth/(float)screenHeight;
-    float height = 5.0f/1.0f;
+    float height = 1.0f/(-zoom);
     float width = ratio*height;
 
     
     float real, imaginary;
     float realSquared, imaginarySquared;
 
-    float offsetX = -(float)screenWidth/2.0f;
-    float offsetY = -(float)screenHeight/2.0f;
 
-    float posX = ((float)id.x + offsetX + 0.0f) / (float)screenWidth * width;
+    float offsetX = -(scrollX*zoom + (float)screenWidth)/2.0f;
+    float offsetY = -(scrollY*zoom + (float)screenHeight)/2.0f;
+
+    // (-screenWidth (zoom - 1/2)*2- screenWidth)/zoom = scrollX 
+    // (-screenWidth (2*zoom - 1) - screenWidth)/zoom = scrollX 
+    // (-screenWidth (2) = scrollX 
+
+
+    float posX = ((float)id.x + offsetX) / (float)screenWidth * width;
     float posY = ((float)id.y + offsetY) / (float)screenHeight * height;
 
     

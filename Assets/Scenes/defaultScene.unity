@@ -154,6 +154,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4f3dde1cdcf04220bcb72ad6df431b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zoom: 1
+  scrollX: 0
+  scrollY: 0
+  maxIterations: 500
   computeShader: {fileID: 7200000, guid: 0cae3c78f17e3acd780816df00cc87ff, type: 3}
   renderTexture: {fileID: 0}
 --- !u!81 &1348731704
