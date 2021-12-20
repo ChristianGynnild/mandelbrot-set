@@ -5,8 +5,8 @@ using UnityEngine;
 public class compute_manager : MonoBehaviour
 {
     public float zoom = 1.0f;
-    public float scrollX = (float)Screen.width/2.0f;
-    public float scrollY = (float)Screen.height/2.0f;
+    public float centerReal = 0.0f;
+    public float centerImaginary = 0.0f;
     public int maxIterations = 500;
     public ComputeShader computeShader;
     public RenderTexture renderTexture;
@@ -31,8 +31,8 @@ public class compute_manager : MonoBehaviour
 
         computeShader.SetFloat("zoom", zoom);
 
-        computeShader.SetFloat("scrollX", scrollX);
-        computeShader.SetFloat("scrollY", scrollY);
+        computeShader.SetFloat("centerReal", centerReal);
+        computeShader.SetFloat("centerImaginary", centerImaginary);
 
 
         if (renderTexture == null || currenResolutionWidth != Screen.width || currenResolutionHeight != Screen.height){
@@ -51,8 +51,32 @@ public class compute_manager : MonoBehaviour
         Graphics.Blit(renderTexture, dest);
     }
     // Update is called once per frame
+
+    public float scrollSpeed = 0.1f;
+    public float zoomSpeed = 0.1f;
+
     void Update()
     {
+        if(Input.GetKey(KeyCode.A)){
+            centerReal -= scrollSpeed/zoom;
+        }
+        if(Input.GetKey(KeyCode.D)){
+            centerReal += scrollSpeed/zoom;
+        }
+        if(Input.GetKey(KeyCode.W)){
+            centerImaginary += scrollSpeed/zoom;
+        }
+        if(Input.GetKey(KeyCode.S)){
+            centerImaginary -= scrollSpeed/zoom;
+        }
+
+
+        if(Input.GetKey(KeyCode.C)){
+            zoom += (1.0f + Mathf.Abs(zoom))*zoomSpeed;
+        }
+        if(Input.GetKey(KeyCode.X)){
+            zoom -= (1.0f + Mathf.Abs(zoom))*zoomSpeed;
+        }
         
     }
 

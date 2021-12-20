@@ -7,7 +7,7 @@
 int screenWidth, screenHeight;
 float zoom;
 uint maxIterations;
-float scrollX, scrollY;
+float centerReal, centerImaginary;
 
 
 RWTexture2D<float4> Result;
@@ -16,36 +16,18 @@ RWTexture2D<float4> Result;
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
     uint iterationCounter = 0;
-
     float ratio = (float)screenWidth/(float)screenHeight;
-    float height = 1.0f/(-zoom);
-    float width = ratio*height;
 
-    
+
     float real, imaginary;
     float realSquared, imaginarySquared;
 
 
-    float offsetX = -(scrollX*zoom + (float)screenWidth)/2.0f;
-    float offsetY = -(scrollY*zoom + (float)screenHeight)/2.0f;
-
-
-    //0.25828155
-
+    float real0 = ((float)id.x/(float)screenWidth*ratio-0.5f*ratio)/zoom + centerReal;
+    float imaginary0 = ((float)id.y/(float)screenHeight-0.5f)/zoom + centerImaginary;
     
-
-    // (-screenWidth (zoom - 1/2)*2- screenWidth)/zoom = scrollX 
-    // (-screenWidth (2*zoom - 1) - screenWidth)/zoom = scrollX 
-    // (-screenWidth (2) = scrollX 
-
-
-    float posX = ((float)id.x + offsetX) / (float)screenWidth * width;
-    float posY = ((float)id.y + offsetY) / (float)screenHeight * height;
-
-    
-
-    real = posX;
-    imaginary = posY;
+    real = real0;
+    imaginary = imaginary0;
     
 
     for (uint i = 0; i < maxIterations; i++){
@@ -56,9 +38,8 @@ void CSMain (uint3 id : SV_DispatchThreadID)
             break;
         }
         else{
-
-            imaginary = 2.0 * real * imaginary + posY;            
-            real = realSquared-imaginarySquared + posX;
+            imaginary = 2.0 * real * imaginary + imaginary0;            
+            real = realSquared-imaginarySquared + real0;
         }
         iterationCounter += 1;
 
