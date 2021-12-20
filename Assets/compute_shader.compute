@@ -29,6 +29,11 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     float offsetX = -(scrollX*zoom + (float)screenWidth)/2.0f;
     float offsetY = -(scrollY*zoom + (float)screenHeight)/2.0f;
 
+
+    //0.25828155
+
+    
+
     // (-screenWidth (zoom - 1/2)*2- screenWidth)/zoom = scrollX 
     // (-screenWidth (2*zoom - 1) - screenWidth)/zoom = scrollX 
     // (-screenWidth (2) = scrollX 

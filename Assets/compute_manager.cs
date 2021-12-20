@@ -23,11 +23,7 @@ public class compute_manager : MonoBehaviour
 
     
     private void OnRenderImage(RenderTexture src, RenderTexture dest){
-        Debug.Log("Hi");
-
         int kernelHandle = computeShader.FindKernel("CSMain");
-
-        //zoom += 0.1f;
 
         computeShader.SetInt("screenWidth", Screen.width);
         computeShader.SetInt("screenHeight", Screen.height);
