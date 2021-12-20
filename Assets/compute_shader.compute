@@ -3,6 +3,9 @@
 
 // Create a RenderTexture with enableRandomWrite flag and set it
 // with cs.SetTexture
+
+int screenWidth, screenHeight;
+
 RWTexture2D<float4> Result;
 
 [numthreads(8,8,1)]
@@ -11,22 +14,21 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     uint maxIterations = 500;
     uint iterationCounter = 0;
 
-    float screenWidth = 1920;
-    float screenHeight = 1080;
 
-    float ratio = screenWidth/screenHeight;
-    float height = 5/1.0f;
+
+    float ratio = (float)screenWidth/(float)screenHeight;
+    float height = 5.0f/1.0f;
     float width = ratio*height;
 
     
     float real, imaginary;
     float realSquared, imaginarySquared;
 
-    float offsetX = -screenWidth/2.0f;
-    float offsetY = -screenHeight/2.0f;
+    float offsetX = -(float)screenWidth/2.0f;
+    float offsetY = -(float)screenHeight/2.0f;
 
-    float posX = ((float)id.x + offsetX + 0.0f) / screenWidth * width;
-    float posY = ((float)id.y + offsetY) / screenHeight * height;
+    float posX = ((float)id.x + offsetX + 0.0f) / (float)screenWidth * width;
+    float posY = ((float)id.y + offsetY) / (float)screenHeight * height;
 
     
 

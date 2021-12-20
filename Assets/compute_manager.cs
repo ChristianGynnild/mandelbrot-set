@@ -4,18 +4,34 @@ using UnityEngine;
 
 public class compute_manager : MonoBehaviour
 {
+    public int variable = Screen.width;
     public ComputeShader computeShader;
     public RenderTexture renderTexture;
+    
+    int currenResolutionWidth, currenResolutionHeight;
+    
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
+
 
     
     private void OnRenderImage(RenderTexture src, RenderTexture dest){
-        if (renderTexture == null){
-            renderTexture = new RenderTexture(Screen.currentResolution.width,Screen.currentResolution.height,24);
+        Debug.Log("Hi");
+
+        int kernelHandle = computeShader.FindKernel("CSMain");
+
+        computeShader.SetInt("screenWidth", variable);
+        computeShader.SetInt("screenHeight", Screen.height);
+
+
+        if (renderTexture == null || currenResolutionWidth != Screen.width || currenResolutionHeight != Screen.height){
+            currenResolutionWidth = Screen.width;
+            currenResolutionHeight = Screen.height;
+
+            renderTexture = new RenderTexture(Screen.width,Screen.height,24);
             renderTexture.enableRandomWrite = true;
             renderTexture.Create(); 
         }
@@ -31,4 +47,6 @@ public class compute_manager : MonoBehaviour
     {
         
     }
+
+
 }
