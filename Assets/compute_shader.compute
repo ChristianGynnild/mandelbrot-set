@@ -6,6 +6,7 @@
 
 int screenWidth, screenHeight;
 float zoom;
+float angle;
 uint maxIterations;
 float centerReal, centerImaginary;
 
@@ -17,6 +18,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 {
     uint iterationCounter = 0;
     float ratio = (float)screenWidth/(float)screenHeight;
+    float2 rotation = float2(cos(angle), sin(angle));
 
 
     float real, imaginary;
@@ -26,6 +28,13 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     float real0 = ((float)id.x/(float)screenWidth*ratio-0.5f*ratio)/zoom + centerReal;
     float imaginary0 = ((float)id.y/(float)screenHeight-0.5f)/zoom + centerImaginary;
     
+    float realTemp = real0;
+    float imaginaryTemp = imaginary0;
+
+    real0 = realTemp*rotation.x-imaginaryTemp*rotation.y;
+    imaginary0 = realTemp*rotation.y+imaginaryTemp*rotation.x;
+
+
     real = real0;
     imaginary = imaginary0;
     

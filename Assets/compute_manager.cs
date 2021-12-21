@@ -7,7 +7,9 @@ public class compute_manager : MonoBehaviour
     public float zoom = 1.0f;
     public float centerReal = 0.0f;
     public float centerImaginary = 0.0f;
+    public float angle = 0.0f;
     public int maxIterations = 500;
+
     public ComputeShader computeShader;
     public RenderTexture renderTexture;
     
@@ -30,7 +32,7 @@ public class compute_manager : MonoBehaviour
         computeShader.SetInt("maxIterations", maxIterations);
 
         computeShader.SetFloat("zoom", zoom);
-
+        computeShader.SetFloat("angle", angle);
         computeShader.SetFloat("centerReal", centerReal);
         computeShader.SetFloat("centerImaginary", centerImaginary);
 
@@ -54,6 +56,7 @@ public class compute_manager : MonoBehaviour
 
     public float scrollSpeed = 0.1f;
     public float zoomSpeed = 0.1f;
+    public float rotationSpeed = 0.1f;
 
     void Update()
     {
@@ -76,6 +79,12 @@ public class compute_manager : MonoBehaviour
         }
         if(Input.GetKey(KeyCode.X)){
             zoom -= (1.0f + Mathf.Abs(zoom))*zoomSpeed;
+        }
+        if(Input.GetKey(KeyCode.Q)){
+            angle += rotationSpeed;
+        }
+        if(Input.GetKey(KeyCode.E)){
+            angle -= rotationSpeed;
         }
         
     }
