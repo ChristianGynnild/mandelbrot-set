@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class compute_manager : MonoBehaviour
 {
-    public double zoom = 1.0;
-    public double centerReal = 0.0;
-    public double centerImaginary = 0.0;
+    public float zoom = 1.0f;
+    public float centerReal = 0.0f;
+    public float centerImaginary = 0.0f;
     public int maxIterations = 500;
     public ComputeShader computeShader;
     public RenderTexture renderTexture;
@@ -29,10 +29,10 @@ public class compute_manager : MonoBehaviour
         computeShader.SetInt("screenHeight", Screen.height);
         computeShader.SetInt("maxIterations", maxIterations);
 
-        computeShader.SetFloat("zoom", (float)zoom);
+        computeShader.SetFloat("zoom", zoom);
 
-        computeShader.SetFloat("centerReal", (float)centerReal);
-        computeShader.SetFloat("centerImaginary", (float)centerImaginary);
+        computeShader.SetFloat("centerReal", centerReal);
+        computeShader.SetFloat("centerImaginary", centerImaginary);
 
 
         if (renderTexture == null || currenResolutionWidth != Screen.width || currenResolutionHeight != Screen.height){
@@ -52,8 +52,8 @@ public class compute_manager : MonoBehaviour
     }
     // Update is called once per frame
 
-    public double scrollSpeed = 0.1;
-    public double zoomSpeed = 0.1;
+    public float scrollSpeed = 0.1f;
+    public float zoomSpeed = 0.1f;
 
     void Update()
     {
@@ -72,10 +72,10 @@ public class compute_manager : MonoBehaviour
 
 
         if(Input.GetKey(KeyCode.C)){
-            zoom += (1.0 + (double)Mathf.Abs((float)zoom))*zoomSpeed;
+            zoom += (1.0f + Mathf.Abs(zoom))*zoomSpeed;
         }
         if(Input.GetKey(KeyCode.X)){
-            zoom -= (1.0 + (double)Mathf.Abs((float)zoom))*zoomSpeed;
+            zoom -= (1.0f + Mathf.Abs(zoom))*zoomSpeed;
         }
         
     }
