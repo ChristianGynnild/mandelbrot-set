@@ -16,6 +16,7 @@ RWTexture2D<float4> Result;
 [numthreads(8,8,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
+    float boundsLength = 20.0f; 
     uint iterationCounter = 0;
     float ratio = (float)screenWidth/(float)screenHeight;
     float2 rotation = float2(cos(angle), sin(angle));
@@ -36,7 +37,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
         realSquared = complexNumber.x*complexNumber.x;
         imaginarySquared = complexNumber.y*complexNumber.y;
 
-        if (realSquared+imaginarySquared > 4){
+        if (realSquared+imaginarySquared > boundsLength*boundsLength){
             break;
         }
         else{
@@ -47,6 +48,9 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 
     }
 
+    float interpolation = (length(complexNumber)-boundsLength)/(boundsLength*boundsLength-boundsLength); //Linear interpolation
+    interpolation = log2(log10(length(complexNumber))/log10(boundsLength)) - 1.0f; //exponential interpolation
+
     float4 color = {0.0f, 0.0f, 0.0f, 1.0f};
 
     float4 hue = float4(0.17f, 1.784f, 0.335f, 1.0f);
@@ -56,10 +60,20 @@ void CSMain (uint3 id : SV_DispatchThreadID)
                 sin(val*hue.g)*0.5f+0.5f,
                 sin(val*hue.b)*0.5f+0.5f,
                 1.0);
+
+    val = sqrt((float)(iterationCounter-1)/(float)maxIterations)*20.0f;
+    float4 previousColor = float4(
+                sin(val*hue.r)*0.5f+0.5f,
+                sin(val*hue.g)*0.5f+0.5f,
+                sin(val*hue.b)*0.5f+0.5f,
+                1.0);
+
+
+    color = lerp(color, previousColor, interpolation);
                 
-    // if(iterationCounter >= maxIterations){
-    //      color = float4(0.0f,0.0f,0.0f,0.0f);
-    // }
+    if(iterationCounter >= maxIterations){
+         color = float4(0.0f,0.0f,0.0f,0.0f);
+    }
 
 
     Result[id.xy] = color;//float4(id.x & id.y, (id.x & 15)/15.0, (id.y & 15)/15.0, 0.0);
