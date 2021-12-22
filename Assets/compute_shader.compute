@@ -9,6 +9,8 @@ float zoom;
 float angle;
 uint maxIterations;
 float centerReal, centerImaginary;
+float4 hue;
+
 
 
 RWTexture2D<float4> Result;
@@ -49,11 +51,10 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     }
 
     float interpolation = (length(complexNumber)-boundsLength)/(boundsLength*boundsLength-boundsLength); //Linear interpolation
-    interpolation = log2(log10(length(complexNumber))/log10(boundsLength)) - 1.0f; //exponential interpolation
+    interpolation = log2(log10(length(complexNumber))/log10(boundsLength)); //exponential interpolation
 
     float4 color = {0.0f, 0.0f, 0.0f, 1.0f};
 
-    float4 hue = float4(0.17f, 1.784f, 0.335f, 1.0f);
     float val = sqrt((float)iterationCounter/(float)maxIterations)*20.0f;
     color = float4(
                 sin(val*hue.r)*0.5f+0.5f,

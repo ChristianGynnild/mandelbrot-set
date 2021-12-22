@@ -6,6 +6,7 @@ public class compute_manager : MonoBehaviour
 {
     public int maxIterations = 500;
     
+    public Vector4 hue = new Vector4(0.17f, 1.784f, 0.335f, 1.0f);
 
     public Vector2 complexCenter = new Vector2(0.0f, 0.0f);
     public float angle = 0.0f;
@@ -40,6 +41,7 @@ public class compute_manager : MonoBehaviour
         computeShader.SetInt("screenHeight", Screen.height);
         computeShader.SetInt("maxIterations", maxIterations);
 
+        computeShader.SetVector("hue", hue);
         computeShader.SetFloat("zoom", smoothZoom);
         computeShader.SetFloat("angle", smoothAngle);
         computeShader.SetFloat("centerReal", smoothComplexCenter.x);
