@@ -77,6 +77,7 @@ public class compute_manager : MonoBehaviour
     public float scrollSpeed = 0.1f;
     public float zoomSpeed = 0.1f;
     public float rotationSpeed = 0.1f;
+    public float morphSpeed = 0.01f;
 
     void Update()
     {
@@ -95,6 +96,22 @@ public class compute_manager : MonoBehaviour
         }
         if(Input.GetKey(KeyCode.S)){
             complexCenter -= scrollSpeed/zoom*(new Vector2(-rotation.y, rotation.x));
+        }
+
+
+        if(Input.GetKey(KeyCode.LeftArrow)){
+            morph += morphSpeed/zoom*rotation;
+        }
+        if(Input.GetKey(KeyCode.RightArrow)){
+            morph -= morphSpeed/zoom*rotation;
+        }
+        //Rotatates 'rotation vector' with 90 degrees before applying linear transformation
+        //[x,y] * (90 degree rotation) = [-y,x]
+        if(Input.GetKey(KeyCode.UpArrow)){
+            morph -= morphSpeed/zoom*(new Vector2(-rotation.y, rotation.x));
+        }
+        if(Input.GetKey(KeyCode.DownArrow)){
+            morph += morphSpeed/zoom*(new Vector2(-rotation.y, rotation.x));
         }
 
 
