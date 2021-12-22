@@ -161,9 +161,9 @@ MonoBehaviour:
   maxIterations: 500
   computeShader: {fileID: 7200000, guid: 0cae3c78f17e3acd780816df00cc87ff, type: 3}
   renderTexture: {fileID: 0}
-  scrollSpeed: 0.03
-  zoomSpeed: 0.03
-  rotationSpeed: 0.03
+  scrollSpeed: 0.01
+  zoomSpeed: 0.01
+  rotationSpeed: 0.01
 --- !u!81 &1348731704
 AudioListener:
   m_ObjectHideFlags: 0
