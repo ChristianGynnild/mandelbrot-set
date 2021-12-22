@@ -6,18 +6,18 @@ public class compute_manager : MonoBehaviour
 {
     public int maxIterations = 500;
     
-    public Vector2 morph = new Vector2(0,0);
     public Vector4 hue = new Vector4(0.17f, 1.784f, 0.335f, 1.0f);
 
     public Vector2 complexCenter = new Vector2(0.0f, 0.0f);
     public float angle = 0.0f;
     public float zoom = 1.0f;
+    public Vector2 morph = new Vector2(0,0);
 
     Vector2 smoothComplexCenter = new Vector2(0.0f, 0.0f);
     float smoothAngle = 0.0f;
     float smoothZoom = 1.0f;
 
-    
+    Vector2 smoothMorph = new Vector2(0,0);
 
     public ComputeShader computeShader;
     public RenderTexture renderTexture;
@@ -41,6 +41,7 @@ public class compute_manager : MonoBehaviour
         smoothAngle = Mathf.Lerp(smoothAngle, angle, 0.03f);
         smoothComplexCenter = new Vector2(Mathf.Lerp(smoothComplexCenter.x, complexCenter.x, 0.03f), Mathf.Lerp(smoothComplexCenter.y, complexCenter.y, 0.03f));
         smoothZoom = Mathf.Lerp(smoothZoom, zoom, 0.03f);
+        smoothMorph = new Vector2(Mathf.Lerp(smoothMorph.x, morph.x, 0.03f), Mathf.Lerp(smoothMorph.y, morph.y, 0.03f));
 
         computeShader.SetInt("screenWidth", Screen.width);
         computeShader.SetInt("screenHeight", Screen.height);
@@ -52,8 +53,8 @@ public class compute_manager : MonoBehaviour
         computeShader.SetFloat("centerReal", smoothComplexCenter.x);
         computeShader.SetFloat("centerImaginary", smoothComplexCenter.y);
 
-        computeShader.SetFloat("morphX", morph.x);
-        computeShader.SetFloat("morphY", morph.y);
+        computeShader.SetFloat("morphX", smoothMorph.x);
+        computeShader.SetFloat("morphY", smoothMorph.y);
 
 
 
