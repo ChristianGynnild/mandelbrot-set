@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class compute_manager : MonoBehaviour
 {
-    public float zoom = 1.0f;
-    public float centerReal = 0.0f;
-    public float centerImaginary = 0.0f;
-    public float angle = 0.0f;
     public int maxIterations = 500;
+    
+
+    public Vector2 complexCenter = new Vector2(0.0f, 0.0f);
+    public float angle = 0.0f;
+    public float zoom = 1.0f;
+
+    Vector2 smoothComplexCenter = new Vector2(0.0f, 0.0f);
+    float smoothAngle = 0.0f;
+    float smoothZoom = 1.0f;
 
     public ComputeShader computeShader;
     public RenderTexture renderTexture;
@@ -27,14 +32,18 @@ public class compute_manager : MonoBehaviour
     private void OnRenderImage(RenderTexture src, RenderTexture dest){
         int kernelHandle = computeShader.FindKernel("CSMain");
 
+        smoothAngle = Mathf.Lerp(smoothAngle, angle, 0.05f);
+        smoothComplexCenter = new Vector2(Mathf.Lerp(smoothComplexCenter.x, complexCenter.x, 0.05f), Mathf.Lerp(smoothComplexCenter.y, complexCenter.y, 0.05f));
+        smoothZoom = Mathf.Lerp(smoothZoom, zoom, 0.05f);
+
         computeShader.SetInt("screenWidth", Screen.width);
         computeShader.SetInt("screenHeight", Screen.height);
         computeShader.SetInt("maxIterations", maxIterations);
 
-        computeShader.SetFloat("zoom", zoom);
-        computeShader.SetFloat("angle", angle);
-        computeShader.SetFloat("centerReal", centerReal);
-        computeShader.SetFloat("centerImaginary", centerImaginary);
+        computeShader.SetFloat("zoom", smoothZoom);
+        computeShader.SetFloat("angle", smoothAngle);
+        computeShader.SetFloat("centerReal", smoothComplexCenter.x);
+        computeShader.SetFloat("centerImaginary", smoothComplexCenter.y);
 
 
         if (renderTexture == null || currenResolutionWidth != Screen.width || currenResolutionHeight != Screen.height){
@@ -61,26 +70,20 @@ public class compute_manager : MonoBehaviour
     void Update()
     {
         Vector2 rotation = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-
  
-
         if(Input.GetKey(KeyCode.A)){
-            centerReal -= scrollSpeed/zoom*rotation.x;
-            centerImaginary -= scrollSpeed/zoom*rotation.y;
+            complexCenter -= scrollSpeed/zoom*rotation;
         }
         if(Input.GetKey(KeyCode.D)){
-            centerReal += scrollSpeed/zoom*rotation.x;
-            centerImaginary += scrollSpeed/zoom*rotation.y;
+            complexCenter += scrollSpeed/zoom*rotation;
         }
         //Rotatates 'rotation vector' with 90 degrees before applying linear transformation
         //[x,y] * (90 degree rotation) = [-y,x]
         if(Input.GetKey(KeyCode.W)){
-            centerReal += -scrollSpeed/zoom*rotation.y;
-            centerImaginary += scrollSpeed/zoom*rotation.x;
+            complexCenter += scrollSpeed/zoom*(new Vector2(-rotation.y, rotation.x));
         }
         if(Input.GetKey(KeyCode.S)){
-            centerReal -= -scrollSpeed/zoom*rotation.y;
-            centerImaginary -= scrollSpeed/zoom*rotation.x;
+            complexCenter -= scrollSpeed/zoom*(new Vector2(-rotation.y, rotation.x));
         }
 
 
