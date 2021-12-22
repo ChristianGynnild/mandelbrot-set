@@ -32,9 +32,9 @@ public class compute_manager : MonoBehaviour
     private void OnRenderImage(RenderTexture src, RenderTexture dest){
         int kernelHandle = computeShader.FindKernel("CSMain");
 
-        smoothAngle = Mathf.Lerp(smoothAngle, angle, 0.05f);
-        smoothComplexCenter = new Vector2(Mathf.Lerp(smoothComplexCenter.x, complexCenter.x, 0.05f), Mathf.Lerp(smoothComplexCenter.y, complexCenter.y, 0.05f));
-        smoothZoom = Mathf.Lerp(smoothZoom, zoom, 0.05f);
+        smoothAngle = Mathf.Lerp(smoothAngle, angle, 0.03f);
+        smoothComplexCenter = new Vector2(Mathf.Lerp(smoothComplexCenter.x, complexCenter.x, 0.03f), Mathf.Lerp(smoothComplexCenter.y, complexCenter.y, 0.03f));
+        smoothZoom = Mathf.Lerp(smoothZoom, zoom, 0.03f);
 
         computeShader.SetInt("screenWidth", Screen.width);
         computeShader.SetInt("screenHeight", Screen.height);
