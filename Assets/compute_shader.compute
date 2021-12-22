@@ -25,14 +25,14 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     float realSquared, imaginarySquared;
 
 
-    float real0 = ((float)id.x/(float)screenWidth*ratio-0.5f*ratio)/zoom + centerReal;
-    float imaginary0 = ((float)id.y/(float)screenHeight-0.5f)/zoom + centerImaginary;
+    float real0 = ((float)id.x/(float)screenWidth*ratio-0.5f*ratio)/zoom;
+    float imaginary0 = ((float)id.y/(float)screenHeight-0.5f)/zoom;
     
     float realTemp = real0;
     float imaginaryTemp = imaginary0;
 
-    real0 = realTemp*rotation.x-imaginaryTemp*rotation.y;
-    imaginary0 = realTemp*rotation.y+imaginaryTemp*rotation.x;
+    real0 = realTemp*rotation.x-imaginaryTemp*rotation.y + centerReal;
+    imaginary0 = realTemp*rotation.y+imaginaryTemp*rotation.x + centerImaginary;
 
 
     real = real0;

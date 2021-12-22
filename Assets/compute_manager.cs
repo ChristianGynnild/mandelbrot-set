@@ -60,17 +60,27 @@ public class compute_manager : MonoBehaviour
 
     void Update()
     {
+        Vector2 rotation = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+
+ 
+
         if(Input.GetKey(KeyCode.A)){
-            centerReal -= scrollSpeed/zoom;
+            centerReal -= scrollSpeed/zoom*rotation.x;
+            centerImaginary -= scrollSpeed/zoom*rotation.y;
         }
         if(Input.GetKey(KeyCode.D)){
-            centerReal += scrollSpeed/zoom;
+            centerReal += scrollSpeed/zoom*rotation.x;
+            centerImaginary += scrollSpeed/zoom*rotation.y;
         }
+        //Rotatates 'rotation vector' with 90 degrees before applying linear transformation
+        //[x,y] * (90 degree rotation) = [-y,x]
         if(Input.GetKey(KeyCode.W)){
-            centerImaginary += scrollSpeed/zoom;
+            centerReal += -scrollSpeed/zoom*rotation.y;
+            centerImaginary += scrollSpeed/zoom*rotation.x;
         }
         if(Input.GetKey(KeyCode.S)){
-            centerImaginary -= scrollSpeed/zoom;
+            centerReal -= -scrollSpeed/zoom*rotation.y;
+            centerImaginary -= scrollSpeed/zoom*rotation.x;
         }
 
 
