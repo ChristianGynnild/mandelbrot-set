@@ -6,6 +6,7 @@ public class compute_manager : MonoBehaviour
 {
     public int maxIterations = 500;
     
+    public Vector2 morph = new Vector2(0,0);
     public Vector4 hue = new Vector4(0.17f, 1.784f, 0.335f, 1.0f);
 
     public Vector2 complexCenter = new Vector2(0.0f, 0.0f);
@@ -16,10 +17,14 @@ public class compute_manager : MonoBehaviour
     float smoothAngle = 0.0f;
     float smoothZoom = 1.0f;
 
+    
+
     public ComputeShader computeShader;
     public RenderTexture renderTexture;
     
     int currenResolutionWidth, currenResolutionHeight;
+
+
 
     
     // Start is called before the first frame update
@@ -46,6 +51,10 @@ public class compute_manager : MonoBehaviour
         computeShader.SetFloat("angle", smoothAngle);
         computeShader.SetFloat("centerReal", smoothComplexCenter.x);
         computeShader.SetFloat("centerImaginary", smoothComplexCenter.y);
+
+        computeShader.SetFloat("morphX", morph.x);
+        computeShader.SetFloat("morphY", morph.y);
+
 
 
         if (renderTexture == null || currenResolutionWidth != Screen.width || currenResolutionHeight != Screen.height){

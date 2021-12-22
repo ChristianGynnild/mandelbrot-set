@@ -10,6 +10,7 @@ float angle;
 uint maxIterations;
 float centerReal, centerImaginary;
 float4 hue;
+float morphX, morphY;
 
 
 
@@ -43,7 +44,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
             break;
         }
         else{
-            complexNumber = float2(realSquared-imaginarySquared + complexNumber0.x, 2.0f * complexNumber.x * complexNumber.y + complexNumber0.y);
+            complexNumber = float2(realSquared-imaginarySquared, 2.0f * complexNumber.x * complexNumber.y) + complexNumber0 + float2(morphX, morphY);
         }
         iterationCounter += 1;
 
