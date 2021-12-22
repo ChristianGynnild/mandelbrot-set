@@ -63,9 +63,9 @@ void CSMain (uint3 id : SV_DispatchThreadID)
                 sin(val*hue.g)*0.5f+0.5f,
                 sin(val*hue.b)*0.5f+0.5f,
                 1.0);
-    // if(iterationCounter != maxIterations){
-    //     float val = iterationCounter/maxIterations;
-    //     color = float4(val,val,val,val);
+                
+    // if(iterationCounter >= maxIterations){
+    //      color = float4(0.0f,0.0f,0.0f,0.0f);
     // }
 
 
