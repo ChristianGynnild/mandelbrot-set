@@ -8,16 +8,21 @@ public class compute_manager : MonoBehaviour
     
     public Vector4 hue = new Vector4(0.17f, 1.784f, 0.335f, 1.0f);
 
-    public Vector2 complexCenter = new Vector2(0.0f, 0.0f);
-    public float angle = 0.0f;
-    public float zoom = 1.0f;
-    public Vector2 morph = new Vector2(0,0);
+    public Vector2 complexCenter;
+    public float angle;
+    public float zoom;
+    public Vector2 morph;
 
-    Vector2 smoothComplexCenter = new Vector2(0.0f, 0.0f);
-    float smoothAngle = 0.0f;
-    float smoothZoom = 1.0f;
+    Vector2 smoothComplexCenter;
+    float smoothAngle;
+    float smoothZoom;
+    Vector2 smoothMorph;
 
-    Vector2 smoothMorph = new Vector2(0,0);
+    Vector2 complexCenter0;
+    float angle0;
+    float zoom0;
+    Vector2 morph0;
+
 
     public ComputeShader computeShader;
     public RenderTexture renderTexture;
@@ -25,12 +30,26 @@ public class compute_manager : MonoBehaviour
     int currenResolutionWidth, currenResolutionHeight;
 
 
-
+    private void resetVariables(){
+        complexCenter = complexCenter0;
+        angle = angle0;
+        zoom = zoom0;
+        morph = morph0;
+    }
     
     // Start is called before the first frame update
     void Start()
     {
+        smoothComplexCenter = complexCenter;
+        smoothAngle = angle;
+        smoothZoom = zoom;
+        smoothMorph = morph;
 
+
+        complexCenter0 = complexCenter;
+        angle0 = angle;
+        zoom0 = zoom;
+        morph0 = morph;
     }
 
 
@@ -127,6 +146,10 @@ public class compute_manager : MonoBehaviour
         }
         if(Input.GetKey(KeyCode.E)){
             angle -= rotationSpeed;
+        }
+
+        if(Input.GetKeyDown(KeyCode.R)){
+            resetVariables();
         }
         
     }

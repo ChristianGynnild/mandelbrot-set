@@ -154,16 +154,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4f3dde1cdcf04220bcb72ad6df431b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoom: 1
-  centerReal: 0
-  centerImaginary: 0
-  angle: 0
   maxIterations: 500
+  hue: {x: 2.4, y: 2.14, z: 0.335, w: 1}
+  complexCenter: {x: 0, y: 0}
+  angle: 0
+  zoom: 1
+  morph: {x: 0, y: 0}
   computeShader: {fileID: 7200000, guid: 0cae3c78f17e3acd780816df00cc87ff, type: 3}
   renderTexture: {fileID: 0}
   scrollSpeed: 0.01
   zoomSpeed: 0.01
   rotationSpeed: 0.01
+  morphSpeed: 0.01
 --- !u!81 &1348731704
 AudioListener:
   m_ObjectHideFlags: 0
