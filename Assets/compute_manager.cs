@@ -63,7 +63,7 @@ public class compute_manager : MonoBehaviour
 
         smoothAngle = Mathf.Lerp(smoothAngle, angle, deltaTimeTransitionSpeed);
         smoothComplexCenter = new Vector2(Mathf.Lerp(smoothComplexCenter.x, complexCenter.x, deltaTimeTransitionSpeed), Mathf.Lerp(smoothComplexCenter.y, complexCenter.y, deltaTimeTransitionSpeed));
-        smoothZoom = Mathf.Lerp(smoothZoom, zoom, Mathf.Min(Time.deltaTime*zoomTransitionSpeed, 1.0f));
+        smoothZoom = Mathf.Lerp(smoothZoom, zoom, Mathf.Pow(Mathf.Min(Time.deltaTime*zoomTransitionSpeed, 1.0f), 0.25f));
         smoothMorph = new Vector2(Mathf.Lerp(smoothMorph.x, morph.x, deltaTimeTransitionSpeed), Mathf.Lerp(smoothMorph.y, morph.y, deltaTimeTransitionSpeed));
 
         computeShader.SetInt("screenWidth", Screen.width);
