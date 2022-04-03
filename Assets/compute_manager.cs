@@ -22,7 +22,9 @@ public class compute_manager : MonoBehaviour
     float angle0;
     float zoom0;
     Vector2 morph0;
-
+    
+    public float transitionSpeed;
+    public float zoomTransitionSpeed;
 
     public ComputeShader computeShader;
     public RenderTexture renderTexture;
@@ -57,10 +59,12 @@ public class compute_manager : MonoBehaviour
     private void OnRenderImage(RenderTexture src, RenderTexture dest){
         int kernelHandle = computeShader.FindKernel("CSMain");
 
-        smoothAngle = Mathf.Lerp(smoothAngle, angle, 0.03f);
-        smoothComplexCenter = new Vector2(Mathf.Lerp(smoothComplexCenter.x, complexCenter.x, 0.03f), Mathf.Lerp(smoothComplexCenter.y, complexCenter.y, 0.03f));
-        smoothZoom = Mathf.Lerp(smoothZoom, zoom, 0.03f);
-        smoothMorph = new Vector2(Mathf.Lerp(smoothMorph.x, morph.x, 0.03f), Mathf.Lerp(smoothMorph.y, morph.y, 0.03f));
+        float deltaTimeTransitionSpeed = Mathf.Min(Time.deltaTime*transitionSpeed, 1.0f);
+
+        smoothAngle = Mathf.Lerp(smoothAngle, angle, deltaTimeTransitionSpeed);
+        smoothComplexCenter = new Vector2(Mathf.Lerp(smoothComplexCenter.x, complexCenter.x, deltaTimeTransitionSpeed), Mathf.Lerp(smoothComplexCenter.y, complexCenter.y, deltaTimeTransitionSpeed));
+        smoothZoom = Mathf.Lerp(smoothZoom, zoom, Mathf.Min(Time.deltaTime*zoomTransitionSpeed, 1.0f));
+        smoothMorph = new Vector2(Mathf.Lerp(smoothMorph.x, morph.x, deltaTimeTransitionSpeed), Mathf.Lerp(smoothMorph.y, morph.y, deltaTimeTransitionSpeed));
 
         computeShader.SetInt("screenWidth", Screen.width);
         computeShader.SetInt("screenHeight", Screen.height);
@@ -94,58 +98,58 @@ public class compute_manager : MonoBehaviour
     }
     // Update is called once per frame
 
-    public float scrollSpeed = 0.1f;
-    public float zoomSpeed = 0.1f;
-    public float rotationSpeed = 0.1f;
-    public float morphSpeed = 0.01f;
+    public float scrollSpeed;
+    public float zoomSpeed;
+    public float rotationSpeed;
+    public float morphSpeed;
 
     void Update()
     {
         Vector2 rotation = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
  
         if(Input.GetKey(KeyCode.A)){
-            complexCenter -= scrollSpeed/zoom*rotation;
+            complexCenter -= scrollSpeed/zoom*rotation*Time.deltaTime;
         }
         if(Input.GetKey(KeyCode.D)){
-            complexCenter += scrollSpeed/zoom*rotation;
+            complexCenter += scrollSpeed/zoom*rotation*Time.deltaTime;
         }
         //Rotatates 'rotation vector' with 90 degrees before applying linear transformation
         //[x,y] * (90 degree rotation) = [-y,x]
         if(Input.GetKey(KeyCode.W)){
-            complexCenter += scrollSpeed/zoom*(new Vector2(-rotation.y, rotation.x));
+            complexCenter += scrollSpeed/zoom*(new Vector2(-rotation.y, rotation.x))*Time.deltaTime;
         }
         if(Input.GetKey(KeyCode.S)){
-            complexCenter -= scrollSpeed/zoom*(new Vector2(-rotation.y, rotation.x));
+            complexCenter -= scrollSpeed/zoom*(new Vector2(-rotation.y, rotation.x))*Time.deltaTime;
         }
 
 
         if(Input.GetKey(KeyCode.LeftArrow)){
-            morph += morphSpeed/zoom*rotation;
+            morph += morphSpeed/zoom*rotation*Time.deltaTime;
         }
         if(Input.GetKey(KeyCode.RightArrow)){
-            morph -= morphSpeed/zoom*rotation;
+            morph -= morphSpeed/zoom*rotation*Time.deltaTime;
         }
         //Rotatates 'rotation vector' with 90 degrees before applying linear transformation
         //[x,y] * (90 degree rotation) = [-y,x]
         if(Input.GetKey(KeyCode.UpArrow)){
-            morph -= morphSpeed/zoom*(new Vector2(-rotation.y, rotation.x));
+            morph -= morphSpeed/zoom*(new Vector2(-rotation.y, rotation.x))*Time.deltaTime;
         }
         if(Input.GetKey(KeyCode.DownArrow)){
-            morph += morphSpeed/zoom*(new Vector2(-rotation.y, rotation.x));
+            morph += morphSpeed/zoom*(new Vector2(-rotation.y, rotation.x))*Time.deltaTime;
         }
 
 
         if(Input.GetKey(KeyCode.C)){
-            zoom += (1.0f + Mathf.Abs(zoom))*zoomSpeed;
+            zoom += (1.0f + Mathf.Abs(zoom))*zoomSpeed*Time.deltaTime;
         }
         if(Input.GetKey(KeyCode.X)){
-            zoom -= (1.0f + Mathf.Abs(zoom))*zoomSpeed;
+            zoom -= (1.0f + Mathf.Abs(zoom))*zoomSpeed*Time.deltaTime;
         }
         if(Input.GetKey(KeyCode.Q)){
-            angle += rotationSpeed;
+            angle += rotationSpeed*Time.deltaTime;
         }
         if(Input.GetKey(KeyCode.E)){
-            angle -= rotationSpeed;
+            angle -= rotationSpeed*Time.deltaTime;
         }
 
         if(Input.GetKeyDown(KeyCode.R)){
